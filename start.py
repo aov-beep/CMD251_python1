@@ -1,32 +1,15 @@
-import pyodbc
-import os
-from dotenv import load_dotenv
+from src.functions import get_all_users
 
-load_dotenv(override=True)
+exit = False
 
-# Define connection parameters
-server = os.getenv('SERVER')
-database = os.getenv('DATABASE')
-username = os.getenv('USERNAME')
-password = os.getenv('PASSWORD')
+while not exit:
+    print("1. Get all users")
+    print("0. Exit")
+    choice = input("Enter your choice: ")
 
-print("Attempting to connect to the database...")
-
-# Create the connection string
-# For Windows Authentication, use: Trusted_Connection=yes;
-conn_str = f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={server};DATABASE={database};UID={username};PWD={password}'
-
-try:
-    # Establish connection
-    with pyodbc.connect(conn_str) as conn:
-        cursor = conn.cursor()
-        print("Connection successful!")
-        # Execute a query
-        cursor.execute("SELECT TOP 10 * FROM Users")
-
-        # Fetch results
-        for row in cursor.fetchall():
-            print(row)
-
-except Exception as e:
-    print(f"Error: {e}")
+    if choice == '1':
+        get_all_users()
+    elif choice == '0':
+        exit = True
+    else:
+        print("Invalid choice. Please try again.")
